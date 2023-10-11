@@ -1,0 +1,16 @@
+{
+  "routes": [
+    {
+      "src": "/*.html",
+      "headers": {
+        "Content-Type": "text/html"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "headers": {
+        "X-Directory-Index": "index.html"
+      }
+    }
+  ]
+}
