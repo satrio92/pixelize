@@ -1,28 +1,76 @@
 <template>
-	<div id="post-detail"  class="w-full px-6 xl:px-12 pb-12 bg-[#050915] font-poppins flex flex-col items-center">
+	<div id="post-detail"  class="w-full  pb-12 bg-[#050915] font-poppins flex flex-col items-center">
 		<header class="w-full xl:w-auto">
 			<Navbar />
 		</header>
-		<div class="w-full flex flex-col xl:flex-row gap-[52px] relative justify-center pt-12">
-			<div class="flex flex-col gap-16 xl:mb-16">
-				<div class="w-full xl:w-[776px] flex flex-col gap-16 rounded-[16px] xl:rounded-[20px] pb-8 xl:pb-8 px-3 xl:px-8 text-white ">
-					<div class="w-full flex flex-col gap-6 items-center">
-						<img :src="'/assets/posts/' + thePost[0].title.replace(/[\s:;*?<>!]+/g, '-').toLowerCase() + '/img/header.jpg'" :alt="thePost[0].title" class="w-full h-[200px] xl:h-[440px] bg-white rounded-[10px] object-cover">
-						<div class="flex items-center text-sm gap-4">
-							<p class="text-xs xl:text-sm text-white/70">{{ thePost[0].postDate }}</p>
-							<div class="flex items-center gap-2">
-								<img :src="'/assets/img/author/' + thePost[0].author.name.replace(/[\s:;*?<>]+/g, '-').toLowerCase() + '.png'" :alt="thePost[0].author.name" class="w-[21px] xl:w-[24px] h-[21px] xl:h-[24px] rounded-full bg-white">
-								<p class="text-xs xl:text-sm text-white/70">{{ thePost[0].author.name }}</p>
-							</div>
-						</div>
-						<h1 class="text-[21px] xl:text-2xl text-center font-semibold px-4">{{ thePost[0].title }}</h1>
-					</div>
-					<div class="flex flex-col gap-5 px-16 text-[13px] text-justify xl:text-base font-light" v-html="article"></div>
-				</div>
-				<Author :author="thePost[0].author"/>
-			</div>
-			<PostWidget :postData="postData" :data="{name: thePost[0].title, category: thePost[0].category }"/>
-		</div>
+    <div class="flex flex-col gap-[64px]">
+      <h1 id="title" class="w-[1136px] text-[60px] font-semibold text-white text-center mt-[86px]">{{ thePost[0].title }}</h1>
+      <div class="border-y-2 border-y-white/25 py-[32px] px-[32px] flex items-center justify-between">
+        <div class="flex gap-[14px] items-center text-white/75">
+          <div class="flex gap-[14px] items-center">
+            <img :src="'/assets/img/author/' + thePost[0].author.name.replace(/[\s:;*?<>]+/g, '-').toLowerCase() + '.png'" :alt="thePost[0].author.name" class="w-[50px] h-[50px] rounded-full bg-white">
+            <p class="text-[16px]">{{ thePost[0].author.name }}</p>
+          </div>
+          <div class="w-[4px] h-[4px] rounded-full bg-white/75"></div>
+          <p class="text-[16px]">{{ minutes }} min reads</p>
+          <div class="w-[4px] h-[4px] rounded-full bg-white/75"></div>
+          <p class="text-[16px]">{{ thePost[0].postDate }}</p>
+        </div>
+        <div class="flex items-center gap-7">
+          <div class="flex gap-[8px] items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-white/60 cursor-pointer">
+              <path d="M7.7887 6.70105C8.1759 6.55391 8.3705 6.12074 8.22336 5.73354C8.07622 5.34635 7.64306 5.15174 7.25586 5.29888C6.68511 5.51577 6.1333 5.8684 5.61708 6.38021C4.96274 7.02896 4.5268 7.76564 4.28318 8.55569C4.16112 8.95151 4.38305 9.37133 4.77887 9.49339C5.17469 9.61545 5.59451 9.39352 5.71657 8.9977C5.88653 8.44654 6.19143 7.92304 6.67318 7.44541C7.05146 7.07036 7.428 6.83812 7.7887 6.70105Z" />
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8468 3.93557C19.5193 2.58173 18.0414 2.16291 16.6535 2.26451C15.3031 2.36337 14.087 2.94914 13.1988 3.51257C12.4984 3.95689 11.5014 3.95689 10.8009 3.51257C9.9127 2.94915 8.6966 2.36338 7.34624 2.26453C5.95834 2.16293 4.48046 2.58175 3.1529 3.93557C1.58562 5.53386 1.0939 7.50689 1.29136 9.50265C1.48653 11.4754 2.35186 13.4808 3.50598 15.2578C4.66317 17.0396 6.14136 18.6392 7.62433 19.8008C9.07467 20.9368 10.6527 21.75 11.9999 21.75C13.3471 21.75 14.9251 20.9368 16.3754 19.8008C17.8584 18.6392 19.3366 17.0396 20.4938 15.2578C21.6479 13.4808 22.5132 11.4754 22.7084 9.50265C22.9058 7.50688 22.4141 5.53386 20.8468 3.93557ZM14.0023 4.77922C14.7877 4.28097 15.7599 3.83394 16.763 3.76051C17.7285 3.68983 18.7692 3.95923 19.7758 4.98579C20.9791 6.21282 21.3774 7.71987 21.2157 9.35497C21.0516 11.0131 20.3084 12.7893 19.2358 14.4408C18.1663 16.0876 16.7996 17.5632 15.4505 18.6199C14.0688 19.7021 12.8278 20.25 11.9999 20.25C11.172 20.25 9.93093 19.7021 8.54926 18.6199C7.20021 17.5632 5.83348 16.0876 4.76394 14.4408C3.69132 12.7893 2.94812 11.0131 2.78407 9.35497C2.6223 7.71987 3.02067 6.21283 4.2239 4.98579C5.23053 3.95925 6.27119 3.68984 7.23672 3.76052C8.23978 3.83395 9.21197 4.28098 9.99742 4.77922C11.1883 5.53467 12.8114 5.53467 14.0023 4.77922Z" />
+            </svg>
+            <span class="text-white/60">66</span>
+          </div>
+          <div class="flex gap-[8px] items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="21" viewBox="0 0 22 21" class="fill-white/60 cursor-pointer">
+              <path d="M7.75 8.75C7.75 9.30228 7.30228 9.75 6.75 9.75C6.19772 9.75 5.75 9.30228 5.75 8.75C5.75 8.19772 6.19772 7.75 6.75 7.75C7.30228 7.75 7.75 8.19772 7.75 8.75Z" />
+              <path d="M11.75 8.75C11.75 9.30228 11.3023 9.75 10.75 9.75C10.1977 9.75 9.75 9.30228 9.75 8.75C9.75 8.19772 10.1977 7.75 10.75 7.75C11.3023 7.75 11.75 8.19772 11.75 8.75Z" />
+              <path d="M15.75 8.75C15.75 9.30228 15.3023 9.75 14.75 9.75C14.1977 9.75 13.75 9.30228 13.75 8.75C13.75 8.19772 14.1977 7.75 14.75 7.75C15.3023 7.75 15.75 8.19772 15.75 8.75Z" />
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M16 2.75C16 1.23122 17.2312 0 18.75 0C20.2688 0 21.5 1.23122 21.5 2.75C21.5 4.26878 20.2688 5.5 18.75 5.5C17.2312 5.5 16 4.26878 16 2.75ZM18.75 1.5C18.0596 1.5 17.5 2.05964 17.5 2.75C17.5 3.44036 18.0596 4 18.75 4C19.4404 4 20 3.44036 20 2.75C20 2.05964 19.4404 1.5 18.75 1.5Z" />
+              <path d="M20.407 6.39173C20.8675 6.18186 21.4854 6.45493 21.4925 6.96097C21.5 7.48591 21.5 8.06805 21.5 8.71637L21.5 10.0811C21.5002 11.6297 21.5004 12.5744 21.2677 13.3679C20.7167 15.2471 19.2471 16.7167 17.3679 17.2677C16.5744 17.5004 15.6297 17.5002 14.0811 17.5L13.3854 17.5L13.3251 17.5001C12.4579 17.5056 11.6132 17.7764 10.9043 18.2759L10.8551 18.3109L8.24441 20.1757C6.7399 21.2503 4.76288 19.6984 5.44954 17.9817C5.54183 17.751 5.37191 17.5 5.12341 17.5H4.52166C2.02441 17.5 7.81351e-08 15.4756 7.81351e-08 12.9783V8.71644C-4.69024e-06 7.34472 -8.32975e-06 6.26929 0.0706118 5.40494C0.142522 4.52479 0.291378 3.79768 0.626713 3.13955C1.17798 2.05762 2.05762 1.17798 3.13955 0.626713C3.79768 0.291378 4.52479 0.142522 5.40494 0.0706118C6.26929 -8.3819e-06 7.34472 -4.74838e-06 8.71644 7.95928e-08H12.7836C13.4319 -2.20238e-06 14.0141 -4.05777e-06 14.539 0.00745158C15.0451 0.0146384 15.3181 0.632497 15.1083 1.09302C14.9978 1.33543 14.7616 1.51062 14.4952 1.507C13.9889 1.50013 13.4133 1.5 12.75 1.5H8.75C7.33749 1.5 6.32322 1.50058 5.52708 1.56563C4.7397 1.62996 4.23197 1.75359 3.82054 1.96322C3.02085 2.37068 2.37068 3.02085 1.96322 3.82054C1.75359 4.23197 1.62996 4.7397 1.56563 5.52708C1.50058 6.32322 1.5 7.33749 1.5 8.75V12.9783C1.5 14.6472 2.85284 16 4.52166 16H5.12341C6.43311 16 7.32867 17.3228 6.84226 18.5388C6.71197 18.8645 7.08709 19.159 7.37255 18.9551L9.98329 17.0903L10.0402 17.0497C10.9993 16.3739 12.1422 16.0076 13.3155 16.0001L13.3854 16H13.9342C15.6761 16 16.3863 15.9924 16.9458 15.8283C18.3348 15.421 19.421 14.3348 19.8283 12.9458C19.9924 12.3863 20 11.6761 20 9.93422V8.75C20 8.08666 19.9999 7.51114 19.993 7.0048C19.9894 6.73843 20.1646 6.50221 20.407 6.39173Z" />
+            </svg>
+            <span class="text-white/60">8</span>
+          </div>
+        </div>
+      </div>
+      <div class="w-full xl:w-[940px] flex flex-col self-center">
+        <div class="w-full relative flex justify-center">
+          <img :src="'/assets/posts/' + thePost[0].title.replace(/[\s]+/g, '-').replace(/[:;*?<>!]/g, '').toLowerCase() + '/img/header.jpg'" :alt="thePost[0].title" class="w-full rounded-[16px] object-cover z-30">
+          <div class="absolute bottom-[-25px] bg-[#73757C] w-[848px] h-full rounded-[16px] z-20"></div>
+          <div class="absolute bottom-[-46px] bg-white/25 w-[754px] h-full rounded-[16px] z-10"></div>
+        </div>
+        <div class="w-full h-[46px]"></div>
+        <div id="content" class="text-white text-[20px] text-justify font-light leading-9 my-[100px] flex flex-col gap-[52px] text-white/75" v-html="article"></div>
+      </div>
+    </div>
+    <div class="flex items-center justify-between w-[940px] pb-[100px]">
+      <div class="flex items-center gap-[10px]">
+        <div v-for="category in thePost[0].category" :key="category.id" class=" px-[14px] py-[6px] bg-white/20 text-white/75 rounded-full">{{ category}}</div>
+      </div>
+      <div class="flex items-center gap-7">
+        <div class="flex gap-[8px] items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-white/60 cursor-pointer">
+            <path d="M7.7887 6.70105C8.1759 6.55391 8.3705 6.12074 8.22336 5.73354C8.07622 5.34635 7.64306 5.15174 7.25586 5.29888C6.68511 5.51577 6.1333 5.8684 5.61708 6.38021C4.96274 7.02896 4.5268 7.76564 4.28318 8.55569C4.16112 8.95151 4.38305 9.37133 4.77887 9.49339C5.17469 9.61545 5.59451 9.39352 5.71657 8.9977C5.88653 8.44654 6.19143 7.92304 6.67318 7.44541C7.05146 7.07036 7.428 6.83812 7.7887 6.70105Z" />
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M20.8468 3.93557C19.5193 2.58173 18.0414 2.16291 16.6535 2.26451C15.3031 2.36337 14.087 2.94914 13.1988 3.51257C12.4984 3.95689 11.5014 3.95689 10.8009 3.51257C9.9127 2.94915 8.6966 2.36338 7.34624 2.26453C5.95834 2.16293 4.48046 2.58175 3.1529 3.93557C1.58562 5.53386 1.0939 7.50689 1.29136 9.50265C1.48653 11.4754 2.35186 13.4808 3.50598 15.2578C4.66317 17.0396 6.14136 18.6392 7.62433 19.8008C9.07467 20.9368 10.6527 21.75 11.9999 21.75C13.3471 21.75 14.9251 20.9368 16.3754 19.8008C17.8584 18.6392 19.3366 17.0396 20.4938 15.2578C21.6479 13.4808 22.5132 11.4754 22.7084 9.50265C22.9058 7.50688 22.4141 5.53386 20.8468 3.93557ZM14.0023 4.77922C14.7877 4.28097 15.7599 3.83394 16.763 3.76051C17.7285 3.68983 18.7692 3.95923 19.7758 4.98579C20.9791 6.21282 21.3774 7.71987 21.2157 9.35497C21.0516 11.0131 20.3084 12.7893 19.2358 14.4408C18.1663 16.0876 16.7996 17.5632 15.4505 18.6199C14.0688 19.7021 12.8278 20.25 11.9999 20.25C11.172 20.25 9.93093 19.7021 8.54926 18.6199C7.20021 17.5632 5.83348 16.0876 4.76394 14.4408C3.69132 12.7893 2.94812 11.0131 2.78407 9.35497C2.6223 7.71987 3.02067 6.21283 4.2239 4.98579C5.23053 3.95925 6.27119 3.68984 7.23672 3.76052C8.23978 3.83395 9.21197 4.28098 9.99742 4.77922C11.1883 5.53467 12.8114 5.53467 14.0023 4.77922Z" />
+          </svg>
+          <span class="text-white/60">66</span>
+        </div>
+        <div class="flex gap-[8px] items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="21" viewBox="0 0 22 21" class="fill-white/60 cursor-pointer">
+            <path d="M7.75 8.75C7.75 9.30228 7.30228 9.75 6.75 9.75C6.19772 9.75 5.75 9.30228 5.75 8.75C5.75 8.19772 6.19772 7.75 6.75 7.75C7.30228 7.75 7.75 8.19772 7.75 8.75Z" />
+            <path d="M11.75 8.75C11.75 9.30228 11.3023 9.75 10.75 9.75C10.1977 9.75 9.75 9.30228 9.75 8.75C9.75 8.19772 10.1977 7.75 10.75 7.75C11.3023 7.75 11.75 8.19772 11.75 8.75Z" />
+            <path d="M15.75 8.75C15.75 9.30228 15.3023 9.75 14.75 9.75C14.1977 9.75 13.75 9.30228 13.75 8.75C13.75 8.19772 14.1977 7.75 14.75 7.75C15.3023 7.75 15.75 8.19772 15.75 8.75Z" />
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M16 2.75C16 1.23122 17.2312 0 18.75 0C20.2688 0 21.5 1.23122 21.5 2.75C21.5 4.26878 20.2688 5.5 18.75 5.5C17.2312 5.5 16 4.26878 16 2.75ZM18.75 1.5C18.0596 1.5 17.5 2.05964 17.5 2.75C17.5 3.44036 18.0596 4 18.75 4C19.4404 4 20 3.44036 20 2.75C20 2.05964 19.4404 1.5 18.75 1.5Z" />
+            <path d="M20.407 6.39173C20.8675 6.18186 21.4854 6.45493 21.4925 6.96097C21.5 7.48591 21.5 8.06805 21.5 8.71637L21.5 10.0811C21.5002 11.6297 21.5004 12.5744 21.2677 13.3679C20.7167 15.2471 19.2471 16.7167 17.3679 17.2677C16.5744 17.5004 15.6297 17.5002 14.0811 17.5L13.3854 17.5L13.3251 17.5001C12.4579 17.5056 11.6132 17.7764 10.9043 18.2759L10.8551 18.3109L8.24441 20.1757C6.7399 21.2503 4.76288 19.6984 5.44954 17.9817C5.54183 17.751 5.37191 17.5 5.12341 17.5H4.52166C2.02441 17.5 7.81351e-08 15.4756 7.81351e-08 12.9783V8.71644C-4.69024e-06 7.34472 -8.32975e-06 6.26929 0.0706118 5.40494C0.142522 4.52479 0.291378 3.79768 0.626713 3.13955C1.17798 2.05762 2.05762 1.17798 3.13955 0.626713C3.79768 0.291378 4.52479 0.142522 5.40494 0.0706118C6.26929 -8.3819e-06 7.34472 -4.74838e-06 8.71644 7.95928e-08H12.7836C13.4319 -2.20238e-06 14.0141 -4.05777e-06 14.539 0.00745158C15.0451 0.0146384 15.3181 0.632497 15.1083 1.09302C14.9978 1.33543 14.7616 1.51062 14.4952 1.507C13.9889 1.50013 13.4133 1.5 12.75 1.5H8.75C7.33749 1.5 6.32322 1.50058 5.52708 1.56563C4.7397 1.62996 4.23197 1.75359 3.82054 1.96322C3.02085 2.37068 2.37068 3.02085 1.96322 3.82054C1.75359 4.23197 1.62996 4.7397 1.56563 5.52708C1.50058 6.32322 1.5 7.33749 1.5 8.75V12.9783C1.5 14.6472 2.85284 16 4.52166 16H5.12341C6.43311 16 7.32867 17.3228 6.84226 18.5388C6.71197 18.8645 7.08709 19.159 7.37255 18.9551L9.98329 17.0903L10.0402 17.0497C10.9993 16.3739 12.1422 16.0076 13.3155 16.0001L13.3854 16H13.9342C15.6761 16 16.3863 15.9924 16.9458 15.8283C18.3348 15.421 19.421 14.3348 19.8283 12.9458C19.9924 12.3863 20 11.6761 20 9.93422V8.75C20 8.08666 19.9999 7.51114 19.993 7.0048C19.9894 6.73843 20.1646 6.50221 20.407 6.39173Z" />
+          </svg>
+          <span class="text-white/60">8</span>
+        </div>
+      </div>
+    </div>
+    <RelatedPost :postData="postData" :data="{name: thePost[0].title, category: thePost[0].category }" />
 		<Footer />
 	</div>
 </template>
@@ -33,6 +81,7 @@ import Category from '../components/Category.vue';
 import Footer from '../components/Footer.vue';
 import Navbar from '../components/Navbar.vue'
 import PostWidget from '../components/PostWidget.vue';
+import RelatedPost from '../components/RelatedPost.vue';
 import postData from '../posts'
 
 export default {
@@ -41,28 +90,40 @@ export default {
 		Navbar,
 		Category,
 		PostWidget,
+    RelatedPost,
 		Author,
-		Footer
+		Footer,
 	},
 	data() {
 		return {
 			postData: postData,
-			article: ""
+			article: "",
+      minutes: "",
+      relatedPosts: ""
 		}
 	},
-	methods: {},
+
+	methods: {
+    calculateReadingTime(content) {
+      // Assuming an average reading speed of 200 words per minute
+      const wordsPerMinute = 200;
+      const wordCount = content.split(/\s+/).length;
+      console.log(Math.ceil(wordCount / wordsPerMinute))
+      this.minutes = Math.ceil(wordCount / wordsPerMinute);
+    }
+  },
 	computed: {
 		thePost() {
-			return this.postData.filter(object => object.title.replace(/[\s:;*?<>]+/g, '-').toLowerCase() === this.$route.params.post);
-		}
-	},
-	  mounted() {
-		// fetch the article HTML file from your local storage
-		fetch('/assets/posts/'+ this.$route.params.post +'/article.html')
-		.then(response => response.text())
-		.then(article => {
-			this.article = article, console.log("haloo")
-		});
+			return this.postData.filter(object => object.title.replace(/[\s]+/g, '-').replace(/[:;*?<>!]/g, '').toLowerCase() === this.$route.params.post);
+		},
+  },
+  mounted() {
+    // fetch the article HTML file from your local storage
+    fetch('/assets/posts/'+ this.$route.params.post +'/article.html')
+    .then(response => response.text())
+    .then(article => {
+      this.article = article, this.calculateReadingTime(article.replace(/(<([^>]+)>)/ig, ""))
+    });
 	}
 }
 </script>
