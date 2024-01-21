@@ -4,7 +4,7 @@
 			<Navbar />
 		</header>
     <div class="flex flex-col gap-[64px]">
-      <h1 id="title" class="w-[1136px] text-[60px] font-semibold text-white text-center mt-[86px]">{{ thePost[0].title }}</h1>
+      <h1 id="title" class="w-[1136px] text-[60px] font-semibold text-white/90 text-center mt-[86px]">{{ thePost[0].title }}</h1>
       <div class="border-y-2 border-y-white/25 py-[32px] px-[32px] flex items-center justify-between">
         <div class="flex gap-[14px] items-center text-white/75">
           <div class="flex gap-[14px] items-center">
@@ -108,8 +108,8 @@ export default {
       // Assuming an average reading speed of 200 words per minute
       const wordsPerMinute = 200;
       const wordCount = content.split(/\s+/).length;
-      console.log(Math.ceil(wordCount / wordsPerMinute))
       this.minutes = Math.ceil(wordCount / wordsPerMinute);
+      console.log(this.minutes)
     }
   },
 	computed: {
